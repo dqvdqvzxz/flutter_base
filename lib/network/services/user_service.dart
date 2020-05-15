@@ -82,4 +82,32 @@
 //        name = json["name"];
 //}
 
+import 'package:blocloginflow/network/services/base_repository.dart';
 
+class userService extends BaseRepository{
+  Future<void> getUser() async {
+    print('Call me C');
+    apiProvider.authService.get(
+        '/',
+        onResponse: (response){
+          print('Call me: ${response.data}');
+        },
+        onError: (error){
+          print('Call me error: $error');
+        }
+    );
+  }
+
+//  Future<void> demoCallAPI() async{
+//    print('Call me C');
+//    apiProvider.authService.get(
+//    '/',
+//    onResponse: (response){
+//    print('Call me: ${response.data}');
+//    },
+//    onError: (error){
+//    print('Call me error: ${error}');
+//    }
+//    );
+//  }
+}

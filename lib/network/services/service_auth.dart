@@ -59,8 +59,8 @@ class DioServiceAuth implements DioService {
 
       if (onResponse != null) onResponse(response);
     } on DioError catch (error) {
-      if (onError != null) _handleError(error);
-      print('Call me B');
+      if (onError != null)
+        _handleError(error);
     }
   }
 
@@ -92,7 +92,8 @@ class DioServiceAuth implements DioService {
 
       if (onResponse != null) onResponse(response);
     } on DioError catch (error) {
-      if (onError != null) onError(error);
+      if (onError != null)
+        _handleError(error);
     }
   }
 
@@ -124,7 +125,8 @@ class DioServiceAuth implements DioService {
 
       if (onResponse != null) onResponse(response);
     } on DioError catch (error) {
-      if (onError != null) onError(error);
+      if (onError != null)
+        _handleError(error);
     }
   }
 
@@ -149,7 +151,8 @@ class DioServiceAuth implements DioService {
       );
       if (onResponse != null) onResponse(response);
     } on DioError catch (error) {
-      if (onError != null) onError(error);
+      if (onError != null)
+        _handleError(error);
     }
   }
 
