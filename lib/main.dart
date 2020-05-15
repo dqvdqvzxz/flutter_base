@@ -12,8 +12,6 @@ void main() {
   final userRepository = UserRepository();
   HttpServices().initHttpRequest();
 
-  userService().getUser();
-
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context){

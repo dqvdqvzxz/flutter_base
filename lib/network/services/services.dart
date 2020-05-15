@@ -22,7 +22,7 @@ class HttpServices{
     responseType: ResponseType.json
   );
 
-  void initHttpRequest() async {
+  Future<void> initHttpRequest() async {
     var tokenStorage = 'token';
     print('token: token');
     authService = DioServiceAuth().init(
