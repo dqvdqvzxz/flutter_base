@@ -25,7 +25,7 @@ class HttpServices{
   void initHttpRequest() async {
     var tokenStorage = 'token';
     print('token: token');
-    DioServiceAuth().init(
+    authService = DioServiceAuth().init(
       baseOptions: _baseOptions,
       interceptors: [
         LoggingInterceptor(),
