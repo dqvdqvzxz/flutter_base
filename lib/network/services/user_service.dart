@@ -83,10 +83,13 @@
 //}
 
 import 'package:blocloginflow/network/services/base_repository.dart';
+import 'package:blocloginflow/network/services/services.dart';
 
-class userService extends BaseRepository{
+class UserService extends BaseRepository{
+  UserService(HttpServices httpServices) : super(httpServices);
+
   Future<void> getUser() async {
-    print('Call me C');
+    print('This is: ${apiProvider.authService}');
     apiProvider.authService.get(
         '/',
         onResponse: (response){

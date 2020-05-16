@@ -33,6 +33,7 @@ class DioServiceAuth implements DioService {
     if (interceptors != null && interceptors.isNotEmpty)
       _client.interceptors.addAll(interceptors);
 
+
     return _instance;
   }
 
@@ -46,7 +47,6 @@ class DioServiceAuth implements DioService {
     OnResponse onResponse,
     OnError onError,
   }) async {
-    print('Call me A');
     try {
       var authOption = options ?? Options();
       authOption.headers[HttpHeaders.authorizationHeader] =

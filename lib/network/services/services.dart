@@ -2,6 +2,7 @@ import 'package:blocloginflow/network/intercepter/logging_intercepter.dart';
 import 'package:blocloginflow/network/services/service_auth.dart';
 import 'package:blocloginflow/network/services/service_interface.dart';
 import 'package:dio/dio.dart';
+import 'package:meta/meta.dart';
 
 class HttpServices{
   DioService authService;
@@ -22,20 +23,24 @@ class HttpServices{
     responseType: ResponseType.json
   );
 
-  Future<void> initHttpRequest() async {
-    var tokenStorage = 'token';
-    print('token: token');
-    authService = DioServiceAuth().init(
-      baseOptions: _baseOptions,
-      interceptors: [
-        LoggingInterceptor(),
-      ],
-      authenticationSchema: '',
-      getTokenMethod: () async{
-        return tokenStorage;
-      }
-    );
+  void init({@required authService}) {
+    authService = authService;
   }
+
+//  Future<void> initHttpRequest() async {
+//    var tokenStorage = 'token';
+//    print('token: token');
+//    authService = DioServiceAuth().init(
+//      baseOptions: _baseOptions,
+//      interceptors: [
+//        LoggingInterceptor(),
+//      ],
+//      authenticationSchema: '',
+//      getTokenMethod: () async{
+//        return tokenStorage;
+//      }
+//    );
+//  }
 
   void cancelRequest(){
     authService?.cancelRequest();

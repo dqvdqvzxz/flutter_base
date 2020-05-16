@@ -1,6 +1,7 @@
 import 'package:blocloginflow/login/login_bloc.dart';
 import 'package:blocloginflow/login/login_event.dart';
 import 'package:blocloginflow/login/login_state.dart';
+import 'package:blocloginflow/network/services/services.dart';
 import 'package:blocloginflow/network/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ class _LoginFormState extends State<LoginForm> {
         username: _usernameController.text,
         password: _passwordController.text,
       ));
-      userService().getUser();
     }
 
     return BlocListener<LoginBloc, LoginState>(
