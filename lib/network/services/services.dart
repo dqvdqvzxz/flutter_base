@@ -15,32 +15,9 @@ class HttpServices{
     return _instance;
   }
 
-  BaseOptions _baseOptions = BaseOptions(
-    baseUrl: 'https://randomuser.me/api/',
-    receiveTimeout: 30000,
-    connectTimeout: 30000,
-    sendTimeout: 30000,
-    responseType: ResponseType.json
-  );
-
-  void init({@required authService}) {
-    authService = authService;
+  void init({@required authenService}){
+    authService = authenService;
   }
-
-//  Future<void> initHttpRequest() async {
-//    var tokenStorage = 'token';
-//    print('token: token');
-//    authService = DioServiceAuth().init(
-//      baseOptions: _baseOptions,
-//      interceptors: [
-//        LoggingInterceptor(),
-//      ],
-//      authenticationSchema: '',
-//      getTokenMethod: () async{
-//        return tokenStorage;
-//      }
-//    );
-//  }
 
   void cancelRequest(){
     authService?.cancelRequest();

@@ -1,28 +1,23 @@
 import 'package:blocloginflow/app.dart';
 import 'package:blocloginflow/authentication/authentication.dart';
 import 'package:blocloginflow/common/common.dart';
-import 'package:blocloginflow/network/services/user_service.dart';
+import 'package:blocloginflow/network/services/services.dart';
 import 'package:blocloginflow/repository/repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:blocloginflow/network/services/services.dart';
 
 import 'network/intercepter/logging_intercepter.dart';
 import 'network/services/service_auth.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final userRepository = UserRepository();
-
-
-  initHttpRequest();
-
-
+  final userRepository = UserRepository(HttpServices());
 
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context){
+        initHttpRequest();
         return AuthenticationBloc(userRepository: userRepository)
             ..add(AppStarted());
       },
@@ -31,9 +26,7 @@ void main() {
   );
 }
 
-void initHttpRequest(){
-  var tokenStorage = 'token';
-  print('token: token');
+void initHttpRequest() async {
 
   BaseOptions _baseOptions = BaseOptions(
       baseUrl: 'https://randomuser.me/api/',
@@ -43,14 +36,18 @@ void initHttpRequest(){
       responseType: ResponseType.json
   );
 
-  HttpServices().init(authService: DioServiceAuth().init(
-      baseOptions: _baseOptions,
-      interceptors: [
-        LoggingInterceptor(),
-      ],
-      authenticationSchema: '',
-      getTokenMethod: () async{
-        return tokenStorage;
-      }
-  ));
+  var tokenStorage = 'token';
+  print('token: token');
+  HttpServices().init(
+    authenService: DioServiceAuth().init(
+        baseOptions: _baseOptions,
+        interceptors: [
+          LoggingInterceptor(),
+        ],
+        authenticationSchema: '',
+        getTokenMethod: () async{
+          return tokenStorage;
+        }
+    )
+  );
 }

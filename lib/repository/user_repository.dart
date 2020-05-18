@@ -1,14 +1,28 @@
+import 'package:blocloginflow/network/services/base_repository.dart';
+import 'package:blocloginflow/network/services/services.dart';
 import 'package:meta/meta.dart';
 import 'dart:async';
+import 'package:dio/dio.dart';
+
 
 //share_preference lib
 
-class UserRepository {
+class UserRepository extends BaseRepository{
+  UserRepository(HttpServices httpServices) : super(httpServices);
+
   Future<String> authenticate({
     @required String username,
     @required String password,
   }) async {
-    await Future.delayed(Duration(seconds: 1));
+    apiProvider.authService.get(
+        '/',
+        onResponse: (response){
+          print('Call me: ${response.data}');
+        },
+        onError: (error){
+          print('Call me error: $error');
+        }
+    );
     return 'token';
   }
 

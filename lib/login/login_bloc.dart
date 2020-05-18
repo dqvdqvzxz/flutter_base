@@ -1,19 +1,21 @@
 import 'package:blocloginflow/authentication/authentication.dart';
 import 'package:blocloginflow/login/login_event.dart';
 import 'package:blocloginflow/login/login_state.dart';
+import 'package:blocloginflow/network/services/services.dart';
 import 'package:blocloginflow/repository/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository userRepository;
+  UserRepository userRepository;
   final AuthenticationBloc authenticationBloc;
 
   LoginBloc({
     @required this.userRepository,
     @required this.authenticationBloc,
-  })  : assert(userRepository != null),
-        assert(authenticationBloc != null);
+  }){
+    userRepository = UserRepository(HttpServices());
+  }
 
   @override
   LoginState get initialState => LoginInitial();

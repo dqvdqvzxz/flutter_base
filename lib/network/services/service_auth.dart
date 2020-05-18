@@ -57,7 +57,8 @@ class DioServiceAuth implements DioService {
           onReceiveProgress: onReceiveProgress,
           cancelToken: cancelToken ?? _cancelToken);
 
-      if (onResponse != null) onResponse(response);
+      if (onResponse != null)
+        onResponse(response);
     } on DioError catch (error) {
       if (onError != null)
         _handleError(error);
@@ -225,6 +226,8 @@ class DioServiceAuth implements DioService {
         "Connection to API server failed due to internet connection";
         break;
     }
+
+    print(errorDescription);
     return errorDescription;
   }
 }
