@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:blocloginflow/network/services/service_error.dart';
 import 'package:dio/dio.dart';
 import 'package:blocloginflow/network/services/service_interface.dart';
 import 'package:meta/meta.dart';
@@ -9,7 +10,6 @@ class DioServiceAuth implements DioService {
 
   Dio _client;
   CancelToken _cancelToken;
-  String _authenticationSchema;
   OnTokenGet _getTokenMethod;
 
   DioServiceAuth._internal() {
@@ -23,10 +23,8 @@ class DioServiceAuth implements DioService {
   DioService init({
     BaseOptions baseOptions,
     List<Interceptor> interceptors,
-    @required String authenticationSchema,
     @required OnTokenGet getTokenMethod,
   }) {
-    _authenticationSchema = authenticationSchema;
     _getTokenMethod = getTokenMethod;
     _client.options = baseOptions;
     _client.interceptors.clear();
@@ -49,8 +47,7 @@ class DioServiceAuth implements DioService {
   }) async {
     try {
       var authOption = options ?? Options();
-      authOption.headers[HttpHeaders.authorizationHeader] =
-          '$_authenticationSchema ${await _getTokenMethod()}';
+      authOption.headers[HttpHeaders.authorizationHeader] = '${await _getTokenMethod()}';
       var response = await _client.get(path,
           queryParameters: queryParameters,
           options: options ?? authOption,
@@ -61,7 +58,7 @@ class DioServiceAuth implements DioService {
         onResponse(response);
     } on DioError catch (error) {
       if (onError != null)
-        _handleError(error);
+        HandleError(error);
     }
   }
 
@@ -79,8 +76,8 @@ class DioServiceAuth implements DioService {
   }) async {
     try {
       var authOption = options ?? Options();
-      authOption.headers[HttpHeaders.authorizationHeader] =
-          '$_authenticationSchema ${await _getTokenMethod()}';
+//      authOption.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
+      authOption.headers[HttpHeaders.authorizationHeader] = '${await _getTokenMethod()}';
       var response = await _client.post(
         path,
         queryParameters: queryParameters,
@@ -91,10 +88,11 @@ class DioServiceAuth implements DioService {
         cancelToken: cancelToken ?? _cancelToken,
       );
 
-      if (onResponse != null) onResponse(response);
+      if (onResponse != null)
+        onResponse(response);
     } on DioError catch (error) {
       if (onError != null)
-        _handleError(error);
+        HandleError(error);
     }
   }
 
@@ -112,8 +110,7 @@ class DioServiceAuth implements DioService {
   }) async {
     try {
       var authOption = options ?? Options();
-      authOption.headers[HttpHeaders.authorizationHeader] =
-          '$_authenticationSchema ${await _getTokenMethod()}';
+      authOption.headers[HttpHeaders.authorizationHeader] = '${await _getTokenMethod()}';
       var response = await _client.put(
         path,
         queryParameters: queryParameters,
@@ -124,10 +121,11 @@ class DioServiceAuth implements DioService {
         cancelToken: cancelToken ?? _cancelToken,
       );
 
-      if (onResponse != null) onResponse(response);
+      if (onResponse != null)
+        onResponse(response);
     } on DioError catch (error) {
       if (onError != null)
-        _handleError(error);
+        HandleError(error);
     }
   }
 
@@ -141,8 +139,7 @@ class DioServiceAuth implements DioService {
       OnError onError}) async {
     try {
       var authOption = options ?? Options();
-      authOption.headers[HttpHeaders.authorizationHeader] =
-          '$_authenticationSchema ${await _getTokenMethod()}';
+      authOption.headers[HttpHeaders.authorizationHeader] = '${await _getTokenMethod()}';
       var response = await _client.delete(
         path,
         queryParameters: queryParameters,
@@ -150,10 +147,11 @@ class DioServiceAuth implements DioService {
         data: data,
         cancelToken: cancelToken ?? _cancelToken,
       );
-      if (onResponse != null) onResponse(response);
+      if (onResponse != null)
+        onResponse(response);
     } on DioError catch (error) {
       if (onError != null)
-        _handleError(error);
+        HandleError(error);
     }
   }
 
@@ -200,34 +198,5 @@ class DioServiceAuth implements DioService {
     _client.unlock();
     _client.interceptors.responseLock.unlock();
     _client.interceptors.errorLock.unlock();
-  }
-
-  String _handleError(DioError error) {
-    String errorDescription = "";
-    switch (error.type) {
-      case DioErrorType.CANCEL:
-        errorDescription = "Request to API server was cancelled";
-        break;
-      case DioErrorType.CONNECT_TIMEOUT:
-        errorDescription = "Connection timeout with API server";
-        break;
-      case DioErrorType.RECEIVE_TIMEOUT:
-        errorDescription = "Receive timeout in connection with API server";
-        break;
-      case DioErrorType.RESPONSE:
-        errorDescription =
-            "Received invalid status code: ${error.response.statusCode}";
-        break;
-      case DioErrorType.SEND_TIMEOUT:
-        errorDescription = "Send timeout in connection with API server";
-        break;
-      case DioErrorType.DEFAULT:
-        errorDescription =
-        "Connection to API server failed due to internet connection";
-        break;
-    }
-
-    print(errorDescription);
-    return errorDescription;
   }
 }

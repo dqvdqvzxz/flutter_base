@@ -10,6 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'network/intercepter/logging_intercepter.dart';
 import 'network/services/service_auth.dart';
 
+import 'package:blocloginflow/constant/constant.dart' as Constant;
+
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository(HttpServices());
@@ -29,22 +31,21 @@ void main() {
 void initHttpRequest() async {
 
   BaseOptions _baseOptions = BaseOptions(
-      baseUrl: 'https://randomuser.me/api/',
+      baseUrl: '${Constant.API_URL_BASE}',
       receiveTimeout: 30000,
       connectTimeout: 30000,
       sendTimeout: 30000,
+      contentType: Headers.formUrlEncodedContentType,
       responseType: ResponseType.json
   );
 
   var tokenStorage = 'token';
-  print('token: token');
   HttpServices().init(
     authenService: DioServiceAuth().init(
         baseOptions: _baseOptions,
         interceptors: [
           LoggingInterceptor(),
         ],
-        authenticationSchema: '',
         getTokenMethod: () async{
           return tokenStorage;
         }

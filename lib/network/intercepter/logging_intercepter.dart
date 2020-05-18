@@ -1,25 +1,55 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 
-class LoggingInterceptor extends Interceptor{
+class LoggingInterceptor extends Interceptor {
+
+  JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+
   @override
-  Future onRequest(RequestOptions request) async{
-    print(
-        'HttpService------onRequest:\x1B[94m ${request.method.toUpperCase()} \x1B[94m ${request.uri.toString()} ---------------\nHttpService------Authorization: \x1B[94m ${request.headers[HttpHeaders.authorizationHeader]}---------------------------------');
+  Future onRequest(RequestOptions request) async {
+    log('''
+        \n-----------------------------------------------------------------------------------------------------
+        HTTPService------onRequest:
+        Method: ${request.method.toUpperCase()}
+        URL: ${request.uri.toString()}
+        Header: ${request.queryParameters[HttpHeaders.requestHeaders]}
+        Content-Type: ${request.contentType},
+        Body: ${request.data},
+-----------------------------------------------------------------------------------------------------
+        ''');
     return request;
   }
 
   @override
-  Future onResponse(Response response) async{
-    print(
-        'HttpService------onRespond:\x1b[32m ${response.request.method.toUpperCase()} ${response.request.uri.toString()} \nHttpService------Status: \x1b[32m ${response.statusCode}');
+  Future onResponse(Response response) async {
+    log(
+        '''
+        \n-----------------------------------------------------------------------------------------------------
+        HttpService------onResponse:
+        Method: ${response.request.method.toUpperCase()}
+        URL: ${response.request.uri.toString()}
+        StatusCode: ${response.statusCode}
+        RepsonseData: ${encoder.convert(response.data)}
+-----------------------------------------------------------------------------------------------------
+        ''');
+
     return response;
   }
 
   @override
   Future onError(DioError error) async {
-    print(
-        'HttpService------onError:\x1b[35m ${error.request.method.toUpperCase()} \x1b[35m ${error.request.uri.toString()} \nHttpService------Status: \x1b[35m ${error.response.statusCode}\nHttpService------Message:\x1b[35m ${error.message}');
+    log(
+    '''
+        \n-----------------------------------------------------------------------------------------------------
+        HttpService------onError:
+        Method: ${error.request.method.toUpperCase()}
+        URL: ${error.request.uri.toString()}
+        StatusCode: ${error.response.statusCode}
+        Message: ${error.message}
+-----------------------------------------------------------------------------------------------------
+        ''');
     return error;
   }
 }

@@ -9,7 +9,6 @@ abstract class DioService {
   DioService init({
     BaseOptions baseOptions,
     List<Interceptor> interceptors,
-    String authenticationSchema,
     OnTokenGet getTokenMethod,
   });
 
