@@ -58,8 +58,19 @@ class _LoginFormState extends State<LoginForm> {
                   padding: const EdgeInsets.all(20),
                   child: RaisedButton(
                     child: Text('SIGN IN'),
-                    onPressed:
-                        state is! LoginLoading ? _onLoginButtonPressed : null,
+                    onPressed: (){
+//                      state is! LoginLoading ? _onLoginButtonPressed : null,
+                      if(state is LoginFailure){
+                        showErrorDialog(context, "Fail");
+                      }
+
+                      if(state is! LoginLoading){
+                        print('Loading');
+                        _onLoginButtonPressed();
+                      }
+                    }
+
+
                   ),
                 ),
                 Container(
@@ -74,4 +85,23 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
+}
+
+
+void showErrorDialog(BuildContext context, String msg) async {
+  await Future.delayed(Duration(milliseconds: 200));
+  showDialog(
+      useRootNavigator: false,
+      context: context,
+      child: AlertDialog(
+        title: Text("Oops"),
+        content: Text(msg),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Ok"))
+        ],
+      ));
 }

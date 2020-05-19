@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:blocloginflow/network/services/service_error.dart';
 import 'package:dio/dio.dart';
 import 'package:blocloginflow/network/services/service_interface.dart';
-import 'package:meta/meta.dart';
 
 class DioServiceNonAuth implements DioService {
   static final DioServiceNonAuth _instance = DioServiceNonAuth._internal();
