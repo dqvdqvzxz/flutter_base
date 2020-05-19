@@ -1,6 +1,7 @@
 import 'package:blocloginflow/app.dart';
 import 'package:blocloginflow/authentication/authentication.dart';
 import 'package:blocloginflow/common/common.dart';
+import 'package:blocloginflow/network/services/service_nonauth.dart';
 import 'package:blocloginflow/network/services/services.dart';
 import 'package:blocloginflow/repository/repository.dart';
 import 'package:dio/dio.dart';
@@ -16,39 +17,39 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = UserRepository(HttpServices());
 
-  runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context){
-        initHttpRequest();
-        return AuthenticationBloc(userRepository: userRepository)
-            ..add(AppStarted());
-      },
-      child: App(userRepository: userRepository),
-    )
-  );
+  runApp(BlocProvider<AuthenticationBloc>(
+    create: (context) {
+      initHttpRequest();
+      return AuthenticationBloc(userRepository: userRepository)
+        ..add(AppStarted());
+    },
+    child: App(userRepository: userRepository),
+  ));
 }
 
 void initHttpRequest() async {
-
   BaseOptions _baseOptions = BaseOptions(
       baseUrl: '${Constant.API_URL_BASE}',
       receiveTimeout: 30000,
       connectTimeout: 30000,
       sendTimeout: 30000,
       contentType: Headers.formUrlEncodedContentType,
-      responseType: ResponseType.json
-  );
+      responseType: ResponseType.json);
 
   var tokenStorage = 'token';
   HttpServices().init(
-    authenService: DioServiceAuth().init(
+      authenService: DioServiceAuth().init(
+          baseOptions: _baseOptions,
+          interceptors: [
+            LoggingInterceptor(),
+          ],
+          getTokenMethod: () async {
+            return tokenStorage;
+          }),
+      nonAuthenService: DioServiceNonAuth().init(
         baseOptions: _baseOptions,
         interceptors: [
           LoggingInterceptor(),
         ],
-        getTokenMethod: () async{
-          return tokenStorage;
-        }
-    )
-  );
+      ));
 }

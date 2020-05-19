@@ -27,10 +27,10 @@ class DioServiceAuth implements DioService {
   }) {
     _getTokenMethod = getTokenMethod;
     _client.options = baseOptions;
-    _client.interceptors.clear();
-    if (interceptors != null && interceptors.isNotEmpty)
+    if (interceptors != null && interceptors.isNotEmpty) {
+      _client.interceptors.clear();
       _client.interceptors.addAll(interceptors);
-
+    }
 
     return _instance;
   }
@@ -76,12 +76,11 @@ class DioServiceAuth implements DioService {
   }) async {
     try {
       var authOption = options ?? Options();
-//      authOption.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
       authOption.headers[HttpHeaders.authorizationHeader] = '${await _getTokenMethod()}';
       var response = await _client.post(
         path,
         queryParameters: queryParameters,
-        options: authOption,
+        options: options ?? authOption,
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
         data: data,
@@ -114,7 +113,7 @@ class DioServiceAuth implements DioService {
       var response = await _client.put(
         path,
         queryParameters: queryParameters,
-        options: authOption,
+        options: options ?? authOption,
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
         data: data,
@@ -143,7 +142,7 @@ class DioServiceAuth implements DioService {
       var response = await _client.delete(
         path,
         queryParameters: queryParameters,
-        options: authOption,
+        options: options ?? authOption,
         data: data,
         cancelToken: cancelToken ?? _cancelToken,
       );

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:blocloginflow/common/common.dart';
 import 'package:blocloginflow/network/services/base_repository.dart';
 import 'package:blocloginflow/network/services/services.dart';
 import 'package:meta/meta.dart';
@@ -38,7 +39,7 @@ class UserRepository extends BaseRepository{
     mapData['client_secret'] = Constant.Config.CONFIG_CLIENT_SECRET;
     mapData['grant_type'] = Constant.Config.CONFIG_GRANT_TYPE_PASSWORD;
 
-    apiProvider.authService.post(
+    apiProvider.nonAuthService.post(
         '${Constant.API_URL_TOKEN}',
         data: mapData,
         onResponse: (response) async{

@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 class HttpServices{
   DioService authService;
+  DioService nonAuthService;
 
   static final HttpServices _instance = HttpServices.internal();
 
@@ -12,11 +13,13 @@ class HttpServices{
     return _instance;
   }
 
-  void init({@required authenService}){
+  void init({@required authenService, @required nonAuthenService}){
     authService = authenService;
+    nonAuthService = nonAuthenService;
   }
 
   void cancelRequest(){
     authService?.cancelRequest();
+    nonAuthService?.cancelRequest();
   }
 }

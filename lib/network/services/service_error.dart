@@ -25,6 +25,6 @@ String HandleError(DioError error) {
       break;
   }
 
-  print(errorDescription);
+  print('DIOErrorType: $errorDescription');
   return errorDescription;
 }
